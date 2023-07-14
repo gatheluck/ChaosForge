@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  core:
+  chaosforge:
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
