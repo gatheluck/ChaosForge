@@ -1,4 +1,4 @@
-data/*
+data/cvpr/*
 models/*
 outputs/*
 __pycache__
@@ -9,3 +9,4 @@ __pycache__
 !data/README.md
 !models/README.md
 !outputs/README.md
+!/data/cvpr/papers2022.json
