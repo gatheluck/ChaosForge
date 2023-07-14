@@ -4,12 +4,11 @@ This script generate json file which includes all CVPR 2023 papers info.
 
 """
 import json
-import pathlib
 import logging
+import pathlib
 from typing import Final
 
 from src.cvpr.parser import get_paper_page_urls, parse_paper_page
-
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -34,4 +33,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main(2022)
+    main(2023)

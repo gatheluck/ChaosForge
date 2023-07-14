@@ -1,7 +1,7 @@
+import logging
 from typing import Final, List
 
 import requests
-import logging
 from bs4 import BeautifulSoup
 from pydantic import BaseModel, HttpUrl
 
