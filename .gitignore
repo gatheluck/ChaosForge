@@ -10,3 +10,5 @@ __pycache__
 !models/README.md
 !outputs/README.md
 !/data/cvpr/papers*.json
+!/data/cvpr/frequency*.json
+!/data/cvpr/wordcloud*.png

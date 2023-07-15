@@ -18,9 +18,9 @@ class Paper(BaseModel):
 
     title: str
     author: str
-    abstract: str
-    cvf: HttpUrl
-    pdf: HttpUrl
+    abstract: str | None
+    cvf: HttpUrl | None
+    pdf: HttpUrl | None
 
 
 def get_paper_page_urls(year: int) -> List[str]:
