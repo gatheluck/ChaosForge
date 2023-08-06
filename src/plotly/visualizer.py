@@ -6,6 +6,8 @@ Links:
 """
 import os
 import pathlib
+import streamlit as st
+
 from enum import Enum
 from typing import Final, List, Set
 
@@ -24,17 +26,23 @@ TARGET_EXTENSIONS: Final[Set[str]] = {
     ".JPEG",
 }
 
+st.session_state['globed_image_paths'] = list()
+
 
 def glob_image_paths(
-    target_directry_path: pathlib.Path,
+    directory_path: pathlib.Path,
     target_extensions: Set[str],
-) -> List[pathlib.Path]:
+) -> None:
     """ """
-    globed_paths = list()
-    for _globed_paths in input_dir.glob(glob_target):
+    globed_paths: List[pathlib.Path] = list()
+    for _target_extension in target_extensions:
+        _globed_paths = directory_path.glob("**/*" + _target_extension)
         globed_paths.extend(_globed_paths)
 
-    return globed_paths
+    print(globed_paths)
+    st.session_state['globed_image_paths'] = globed_paths
+    # print(globed_paths)
+    # return globed_paths
 
 
 if __name__ == "__main__":
@@ -42,7 +50,6 @@ if __name__ == "__main__":
 
     import plotly.figure_factory as ff
     import plotly.graph_objects as go
-    import streamlit as st
 
     st.set_page_config(layout="wide")
 
@@ -64,33 +71,36 @@ if __name__ == "__main__":
     # Layout (Sidebar)
     st.sidebar.markdown("## Settings")
 
-    _target_directry_path = st.sidebar.text_input(
-        "Input Path",
-        value=f"{os.getcwd()}/data/",
-        on_change=None,  # <- This will be used for call back
-        args=None,
-        kwargs=None,
-        label_visibility="visible",
+    _directry_path = pathlib.Path(
+        st.sidebar.text_input(
+            "Input Directry Path",
+            value=f"{os.getcwd()}/data/",
+            on_change=None,  # <- This will be used for call back
+            args=None,
+            kwargs=None,
+            label_visibility="visible",
+        )
     )
-    _target_extensions = st.sidebar.multiselect(
-        "Target Extentions",
-        TARGET_EXTENSIONS,
-        default=TARGET_EXTENSIONS,
-        on_change=None,  # <- This will be used for call back
-        args=None,
-        kwargs=None,
-        label_visibility="visible",
+    _target_extensions = set(
+        st.sidebar.multiselect(
+            "Target Extentions",
+            TARGET_EXTENSIONS,
+            default=TARGET_EXTENSIONS,
+            on_change=None,  # <- This will be used for call back
+            args=None,
+            kwargs=None,
+            label_visibility="visible",
+        )
     )
 
-    # st.button(
-    #     label,
-    #     on_click=glob_image_paths,
-    #     kwargs={
-    #         target_directry_path = input_directory_path,
-    #         target_extensions =,
-    #         = input_directory_path,
-    #     },
-    # )
+    st.sidebar.button(
+        "Glob Input Directry",
+        on_click=glob_image_paths,
+        kwargs={
+            "directory_path": _directry_path,
+            "target_extensions": _target_extensions,
+        },
+    )
 
     visualization_method_selected = st.sidebar.selectbox(
         "Visualization Method",
@@ -173,12 +183,12 @@ if __name__ == "__main__":
     )
 
     # Layout (Content)
-    st.plotly_chart(
-        figure_or_data,
-        use_container_width=False,
-        sharing="streamlit",
-        theme="streamlit",
-    )
+    # st.plotly_chart(
+    #     figure_or_data,
+    #     use_container_width=False,
+    #     sharing="streamlit",
+    #     theme="streamlit",
+    # )
 
     # left_column, right_column = st.columns(2)
     # left_column.subheader("Categorical Variable Distribution: " + cat_selected)
