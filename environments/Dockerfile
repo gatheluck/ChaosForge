@@ -15,8 +15,11 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     PYTHONPATH=${APPLICATION_DIRECTORY}
 
 RUN apt update \
-    && apt install --no-install-recommends -y git curl make \
-    && pip3 install poetry
+    && apt install --no-install-recommends -y software-properties-common \
+    git curl make ssh openssh-client screen build-essential python3-dev libopencv-dev
+
+RUN python3 -m pip install --upgrade pip setuptools requests \
+    && python3 -m pip install poetry
 
 # Add user. Without this, following process is executed as admin. 
 RUN groupadd -g ${GID} ${GROUP_NAME} \
